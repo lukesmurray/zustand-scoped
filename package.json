@@ -1,6 +1,6 @@
 {
   "name": "@lukesmurray/zustand-scoped",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Created scoped (nested) zustand stores which can be called with initial data.",
   "keywords": [
     "zustand",

@@ -2,6 +2,10 @@
 
 All notable changes to the "zustand-scoped" project will be documented in this file.
 
+# 0.0.4 2023-01-30
+
+Fix bundlephobia badge.
+
 # 0.0.3 2023-01-30
 
 Make `react` and `zustand` peer dependencies.

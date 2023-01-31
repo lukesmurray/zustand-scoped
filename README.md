@@ -1,6 +1,6 @@
 # zustand-scoped
 
-[![Build Size](https://img.shields.io/bundlephobia/minzip/@lukesmurray/zustand-scoped?label=bundle%20size&style=flat&colorA=000000&colorB=000000)](https://bundlephobia.com/result?p=@lukesmurray/zustand-scoped)
+[![Build Size](https://img.shields.io/bundlephobia/minzip/@lukesmurray/zustand-scoped?label=bundle&colorA=000000&colorB=000000)](https://bundlephobia.com/package/@lukesmurray/zustand-scoped@latest)
 [![Version](https://img.shields.io/npm/v/@lukesmurray/zustand-scoped?style=flat&colorA=000000&colorB=000000)](https://www.npmjs.com/package/@lukesmurray/zustand-scoped)
 
 > Created scoped (nested) zustand stores which can be called with initial data.
