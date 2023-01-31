@@ -1,6 +1,6 @@
 {
   "name": "@lukesmurray/zustand-scoped",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Created scoped (nested) zustand stores which can be called with initial data.",
   "keywords": [
     "zustand",
@@ -17,7 +17,7 @@
     "email": "lukepigeonmail@gmail.com"
   },
   "license": "MIT",
-  "types": "dist/lib/index.d.ts",
+  "types": "dist/types/index.d.ts",
   "main": "dist/lib/index.js",
   "module": "dist/lib/index.mjs",
   "exports": {
