@@ -5,13 +5,13 @@ type Scoped = <
   Mps extends [StoreMutatorIdentifier, unknown][] = [],
   Mcs extends [StoreMutatorIdentifier, unknown][] = []
 >(
-  initializer: StateCreator<T, [...Mps, ["zustand-scoped", never]], Mcs>
-) => StateCreator<T, Mps, [["zustand-scoped", never], ...Mcs]>;
+  initializer: StateCreator<T, [...Mps, ["zustand-scoped/scoped", never]], Mcs>
+) => StateCreator<T, Mps, [["zustand-scoped/scoped", never], ...Mcs]>;
 
 declare module "zustand/vanilla" {
   // eslint-disable-next-line unused-imports/no-unused-vars
   interface StoreMutators<S, A> {
-    "zustand-scoped": WithScoped<S>;
+    "zustand-scoped/scoped": WithScoped<S>;
   }
 }
 

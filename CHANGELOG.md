@@ -2,6 +2,10 @@
 
 All notable changes to the "zustand-scoped" project will be documented in this file.
 
+# NOT RELEASED
+
+- Rename "zustand-scoped" middleware to "zustand-scoped/scoped"
+
 # 0.0.4 2023-01-30
 
 Fix bundlephobia badge.
