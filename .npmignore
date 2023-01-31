@@ -1,0 +1,19 @@
+# config files
+.eslintignore
+.eslintrc.js
+.husky
+.lintstagedrc
+.prettierrc.js
+.prettierignore
+
+# tests and examples
+examples
+tests
+
+# build files
+tsconfig.json
+tsconfig.*.json
+
+vite.config.ts
+
+dist/.tsbuildinfo

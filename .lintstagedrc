@@ -1,0 +1,3 @@
+{
+  "*.{ts,tsx,html,json,js,jsx}": "yarn lint --fix"
+}

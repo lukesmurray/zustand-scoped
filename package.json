@@ -1,0 +1,74 @@
+{
+  "name": "@lukesmurray/zustand-scoped",
+  "version": "0.0.1",
+  "description": "Created scoped (nested) zustand stores which can be called with initial data.",
+  "keywords": [
+    "zustand",
+    "scoped",
+    "nested",
+    "store",
+    "state",
+    "react",
+    "hooks"
+  ],
+  "homepage": "https://github.com/lukesmurray/zustand-scoped#readme",
+  "bugs": {
+    "url": "https://github.com/lukesmurray/zustand-scoped/issues",
+    "email": "lukepigeonmail@gmail.com"
+  },
+  "license": "MIT",
+  "types": "dist/lib/index.d.ts",
+  "main": "dist/lib/index.js",
+  "module": "dist/lib/index.mjs",
+  "exports": {
+    ".": {
+      "types": "./dist/types/index.d.ts",
+      "import": "./dist/lib/index.mjs",
+      "default": "./dist/lib/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "sideEffects": false,
+  "scripts": {
+    "build": "tsc && vite build && tsc --project tsconfig.build.json",
+    "test": "vitest",
+    "test:coverage": "vitest --coverage",
+    "lint": "eslint --ext .ts --ext .tsx --ext .html --ext .json --ext .js --ext .jsx",
+    "format:scripts": "yarn lint --fix",
+    "prepare": "husky install && husky set .husky/pre-commit 'npx lint-staged' && git add .husky/pre-commit",
+    "uninstall-husky": "npm uninstall husky --no-save && git config --unset core.hooksPath && npx rimraf .husky"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^13.4.0",
+    "@typescript-eslint/eslint-plugin": "^5.48.2",
+    "@typescript-eslint/parser": "^5.48.2",
+    "@vitest/ui": "^0.28.3",
+    "eslint": "^8.33.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-airbnb-typescript": "^17.0.0",
+    "eslint-config-prettier": "^8.6.0",
+    "eslint-plugin-eslint-comments": "^3.2.0",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-json": "^3.1.0",
+    "eslint-plugin-jsx-a11y": "^6.7.1",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-react": "^7.32.1",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-simple-import-sort": "^10.0.0",
+    "eslint-plugin-unicorn": "^45.0.2",
+    "eslint-plugin-unused-imports": "^2.0.0",
+    "husky": "^8.0.3",
+    "jsdom": "^21.1.0",
+    "prettier": "^2.8.3",
+    "react-dom": "^18.2.0",
+    "typescript": "^4.9.4",
+    "vite": "^4.0.0",
+    "vitest": "^0.28.3"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "zustand": "^4.3.2"
+  },
+  "peerDependencies": {}
+}

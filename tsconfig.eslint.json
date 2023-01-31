@@ -1,0 +1,26 @@
+{
+  // extend the base config
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    // ensure we don't accidentally use the config for a build
+    "noEmit": true,
+    "resolveJsonModule": true
+  },
+  "include": [
+    // include src files
+    "src",
+    // include example files
+    "examples",
+    // include test files
+    "tests",
+    // include additional files
+    ".eslintrc.js",
+    ".prettierrc.js",
+    "tsconfig.build.json",
+    "tsconfig.eslint.json",
+    "tsconfig.json",
+    "tsconfig.node.json",
+    "vite.config.ts"
+  ]
+}
