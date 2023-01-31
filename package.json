@@ -1,6 +1,6 @@
 {
   "name": "@lukesmurray/zustand-scoped",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Created scoped (nested) zustand stores which can be called with initial data.",
   "keywords": [
     "zustand",
@@ -61,14 +61,16 @@
     "husky": "^8.0.3",
     "jsdom": "^21.1.0",
     "prettier": "^2.8.3",
+    "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "typescript": "^4.9.4",
     "vite": "^4.0.0",
-    "vitest": "^0.28.3"
-  },
-  "dependencies": {
-    "react": "^18.2.0",
+    "vitest": "^0.28.3",
     "zustand": "^4.3.2"
   },
-  "peerDependencies": {}
+  "dependencies": {},
+  "peerDependencies": {
+    "react": "^18.2.0",
+    "zustand": "^4.3.2"
+  }
 }
