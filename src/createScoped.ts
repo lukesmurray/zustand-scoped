@@ -5,7 +5,6 @@ import {
   StateCreator,
   StoreApi,
   StoreMutatorIdentifier,
-  UseBoundStore,
 } from "zustand";
 
 /** Use context but disallows subscribing to the entire store. */
@@ -41,6 +40,23 @@ export type CreateScopedStore = {
   ) => CreateScopedStoreReturn<T, Mos, I>;
 };
 
+// TODO(lukemurray): Remove ScopedWithReact and ScopedUseBoundStore once
+// https://github.com/pmndrs/zustand/pull/1589/files is merged.
+type ScopedWithReact<S extends StoreApi<unknown>> = Pick<
+  S,
+  "getState" | "subscribe"
+> & {
+  getServerState?: () => ExtractState<S>;
+};
+export type ScopedUseBoundStore<S extends ScopedWithReact<StoreApi<unknown>>> =
+  {
+    (): ExtractState<S>;
+    <U>(
+      selector: (state: ExtractState<S>) => U,
+      equals?: (a: U, b: U) => boolean
+    ): U;
+  } & S;
+
 /**
  * Return type of `createScopedStore`.
  * Is a function that takes an initializer function and returns a store.
@@ -57,7 +73,7 @@ export type CreateScopedStoreReturn<
    */
   (
     ...args: Partial<I> extends I ? [initialData?: I] : [initialData: I]
-  ): UseBoundStore<Mutate<StoreApi<T>, Mos>>;
+  ): ScopedUseBoundStore<Mutate<StoreApi<T>, Mos>>;
   /**
    * Return state which can be nested in a store.
    * Takes in (set, get, initialData) and returns the store state.

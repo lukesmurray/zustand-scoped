@@ -1,4 +1,4 @@
-import { createScopedStore, scoped } from "src";
+import { createScopedStore, stateReq } from "src";
 
 type BearState = {
   bears: number;
@@ -12,7 +12,7 @@ type BearInitialData = {
 
 const createBearStore = createScopedStore<BearState, BearInitialData>()(
   (initialData) =>
-    scoped((set, get) => ({
+    stateReq((set, get) => ({
       bears: initialData.bears ?? 0,
       increasePopulation: () =>
         set((state) => ({ ...state, bears: state.bears + 1 })),
@@ -33,7 +33,7 @@ const createDefinedBearStore = createScopedStore<
   BearState,
   BearDefinedInitialData
 >()((initialData) =>
-  scoped((set, get) => ({
+  stateReq((set, get) => ({
     bears: initialData.bears,
     increasePopulation: () =>
       set((state) => ({ ...state, bears: state.bears + 1 })),

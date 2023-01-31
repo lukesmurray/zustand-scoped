@@ -1,22 +1,41 @@
-import { StoreApi, UseBoundStore } from "zustand";
+import { StoreApi } from "zustand";
+
+// TODO(lukemurray): Replace with use boundstore once
+// https://github.com/pmndrs/zustand/pull/1589/files is merged.
+import type { ScopedUseBoundStore } from "./createScoped";
 
 type ExtractState<S> = S extends { getState: () => infer T } ? T : never;
 
-export function createScopedHook<S extends StoreApi<unknown>, A, C, U>(
-  parentStore: UseBoundStore<S>,
+export function createScopedHook<
+  S extends Pick<StoreApi<unknown>, "getState" | "subscribe">,
+  A,
+  C,
+  U
+>(
+  parentStore: ScopedUseBoundStore<S>,
   childSelector: (childSelectorArg: A) => (state: ExtractState<S>) => C,
   defaultChildSelectorArg: A
 ): (selector: (state: C) => U, equalityFn?: (a: U, b: U) => boolean) => U;
-export function createScopedHook<S extends StoreApi<unknown>, A, C, U>(
-  parentStore: UseBoundStore<S>,
+export function createScopedHook<
+  S extends Pick<StoreApi<unknown>, "getState" | "subscribe">,
+  A,
+  C,
+  U
+>(
+  parentStore: ScopedUseBoundStore<S>,
   childSelector: (childSelectorArg: A) => (state: ExtractState<S>) => C
 ): (
   childSelectorArg: A,
   selector: (state: C) => U,
   equalityFn?: (a: U, b: U) => boolean
 ) => U;
-export function createScopedHook<S extends StoreApi<unknown>, A, C, U>(
-  parentStore: UseBoundStore<S>,
+export function createScopedHook<
+  S extends Pick<StoreApi<unknown>, "getState" | "subscribe">,
+  A,
+  C,
+  U
+>(
+  parentStore: ScopedUseBoundStore<S>,
   childSelector: (childSelectorArg: A) => (state: ExtractState<S>) => C,
   defaultChildSelectorArg?: A
 ):

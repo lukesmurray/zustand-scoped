@@ -83,7 +83,7 @@ function Bears({ bears }: { bears: number }) {
 `createScopedStore` returns a function that can be called directly to get a react hook for your store.
 But it also returns two unique properties.
 
-You can access a vanilla store by calling `.store(initialData)`
+You can access a vanilla store by calling `createBearStore.store(initialData)`
 
 ```tsx
 const vanillaStore = createBearStore.store({ bears: 0 });
@@ -92,7 +92,7 @@ const vanillaStore = createBearStore.store({ bears: 0 });
 const { getState, setState, subscribe } = vanillaStore;
 ```
 
-You can create a scoped store by called `.scoped(setOverride, getOverride, initialData)`.
+You can create a scoped store by called `createBearStore.scoped(setOverride, getOverride, initialData)`.
 See the section on scoped stores below.
 
 ### Optional Initial Data
@@ -121,11 +121,11 @@ The overriden `set` function receives the child state but must update the parent
 
 We'll start by creating a todo store.
 
-The only change is we add the `scoped` middleware which enforces that `set` cannot be called with partial state or return partial state.
+The only change is we add the `stateReq` middleware which enforces that `set` cannot be called with partial state or return partial state.
 This is *extremely helpful* since you often need access to the entire child state to know which child to update from the parent.
 
 ```tsx
-import { createScopedStore, scoped } from "@lukesmurray/zustand-scoped";
+import { createScopedStore, stateReq } from "@lukesmurray/zustand-scoped";
 
 interface TodoState {
   // unique id so we can find the todo in the parent store.
@@ -143,8 +143,8 @@ interface TodoInitialData {
 
 const createTodoStore = createScopedStore<TodoState, TodoInitialData>()(
   (initialData) =>
-    // if you plan to nest a store. Use the scoped middleware.
-    scoped((set) => ({
+    // if you plan to nest a store. Use the stateReq middleware.
+    stateReq((set) => ({
       id: initialData.id,
       checked: initialData.checked ?? false,
       toggleDone: () => set((state) => ({ ...state, checked: !state.checked })),
@@ -171,7 +171,7 @@ Fundamentally its the same pattern as the much shorter example in [this issue co
 
 ```tsx
 const createAppStore = createScopedStore<AppState>()(() =>
-  scoped((set, get) => {
+  stateReq((set, get) => {
     // define a helper function to create nested stores.
     const createNestedTodoStore = (todoInitialData: TodoInitialData) => {
       // define a selector to get the todo from the parent store.
@@ -234,8 +234,9 @@ const createAppStore = createScopedStore<AppState>()(() =>
 );
 ```
 
-Finally we can use the store in a component.
-We use the helper `createScopedHook` to create a scoped hook that can select from the `TodoStore`.
+## Hooks for nested stores 
+
+The helper `createScopedHook` constructs a hook that can select from the nested `TodoStore`.
 We pass a selector to `createScopedHook` to select a todo from the `AppStore`.
 The selector must take a single arugment.
 That argument becomes the first parameter of the returned hook.
@@ -290,14 +291,69 @@ function App() {
 }
 ```
 
+## Middleware
+
+### stateReq
+
+The stateReq middleware enforces that all state is returned by the `set` function.
+This is helpful in nested store since you often need to find the element to update based on an identifying property such as an `id`.
+If `set` returns a `Partial` state, then you have no guarantee that the identifying property is included.
+
+```tsx
+import { createScopedStore, stateReq } from "@lukesmurray/zustand-scoped";
+
+const createTodoStore = createScopedStore<TodoState, TodoInitialData>()(
+  (initialData) =>
+    stateReq((set) => ({
+      id: initialData.id,
+      checked: initialData.checked ?? false,
+
+      // ✅ we returned the entire state from set using {...state}
+      toggleDone: () => set((state) => ({ ...state, checked: !state.checked })),
+
+      // ❌ we only returned partial state {checked}.
+      // toggleDone: () => set((state) => ({ checked: !state.checked })),
+    }))
+);
+```
+
+### devtoolsReq
+
+The devtoolsReq middleware enforces that `action` is passed to every set method.
+This can be helpful if you want to enforce that all actions are named, which makes debugging large stores significantly easier.
+
+```tsx
+import { createScopedStore, devtoolsReq } from "@lukesmurray/zustand-scoped";
+
+const createTodoStore = createScopedStore<TodoState, TodoInitialData>()(
+  (initialData) =>
+    devtoolsReq((set, get) => ({
+      id: initialData.id,
+      checked: initialData.checked ?? false,
+      // ✅ We pass the action as a third argument to set.
+      toggleDone: () =>
+        set({ ...get(), checked: !get().checked }, false, "toggleDone"),
+
+      // ❌ We did not pass the action as a third argument to set.
+      // toggleDone: () =>
+      //   set({ ...get(), checked: !get().checked }, false),
+    }))
+);
+```
+
 ## More Examples
 
 If you have questions check out the examples in the examples folder.
 
 ## Caveats
 
-- If you use `scoped` it does not work with `immer` middleware. The two middlewares are contradictory. `scoped` requires that `set` returns the store's state. `immer` allows `set` to return void.
-- `subscribe` and `destroy` do not work inside of nested stores. This only affects you if you call `subscribe` or `destroy` in your `createStore` function.
+- If you use `stateReq` it does not work with `immer` middleware. The two middlewares are contradictory. `stateReq` requires that `set` returns the store's state. `immer` allows `set` to return void.
+- `subscribe` and `destroy` do not work inside of stores created with `factory.scoped`. This only affects you if you call `subscribe` or `destroy` in your `createStore` function which I've never seen.
+
+## Middlewares and their mutators reference
+
+- `devtoolsReq` — `["zustand-scoped/devtoolsReq", never]`
+- `stateReq` — `["zustand-scoped/stateReq", never]`
 
 ## Developing
 

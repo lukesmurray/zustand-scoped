@@ -55,7 +55,7 @@ export default defineConfig({
       fileName: (format) => fileName[format],
     },
     rollupOptions: {
-      external: ["react", "zustand"],
+      external: ["react", "zustand", "zustand/middleware"],
       output: {
         globals: {},
       },

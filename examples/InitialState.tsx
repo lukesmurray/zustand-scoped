@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { createScopedStore, scoped } from "src";
+import { createScopedStore, stateReq } from "src";
 
 type BearState = {
   bears: number;
@@ -16,7 +16,7 @@ const createBearStore = createScopedStore<BearState, BearInitialData>()(
   (initialData) =>
     // optionally add the scoped middleware to the store if you want to use the store
     // as a nested store.
-    scoped((set, get) => ({
+    stateReq((set, get) => ({
       bears: initialData.bears,
       increasePopulation: () =>
         set((state) => ({ ...state, bears: state.bears + 1 })),

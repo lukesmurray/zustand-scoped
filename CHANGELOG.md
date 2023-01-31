@@ -2,9 +2,10 @@
 
 All notable changes to the "zustand-scoped" project will be documented in this file.
 
-# NOT RELEASED
+# 0.0.5 2023-01-31
 
-- Rename "zustand-scoped" middleware to "zustand-scoped/scoped"
+- Add `devtoolsReq` middleware which enforces that actions are required.
+- Rename scoped middleware to `stateReq` and change the midleware's `StoreMutatorIdentifier` from "zustand-scoped" to "zustand-scoped/stateReq"
 
 # 0.0.4 2023-01-30
 

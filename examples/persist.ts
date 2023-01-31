@@ -1,4 +1,4 @@
-import { createScopedStore, scoped } from "src";
+import { createScopedStore, stateReq } from "src";
 import { createJSONStorage, persist } from "zustand/middleware";
 
 type BearState = {
@@ -9,7 +9,7 @@ type BearState = {
 
 const createBearStore = createScopedStore<BearState>()(() =>
   persist(
-    scoped((set, get) => ({
+    stateReq((set, get) => ({
       bears: 0,
       increasePopulation: () =>
         set((state) => ({ ...state, bears: state.bears + 1 })),

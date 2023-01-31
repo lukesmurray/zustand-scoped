@@ -1,17 +1,21 @@
 import { StateCreator, StoreMutatorIdentifier } from "zustand";
 
-type Scoped = <
+type StateReq = <
   T,
   Mps extends [StoreMutatorIdentifier, unknown][] = [],
   Mcs extends [StoreMutatorIdentifier, unknown][] = []
 >(
-  initializer: StateCreator<T, [...Mps, ["zustand-scoped/scoped", never]], Mcs>
-) => StateCreator<T, Mps, [["zustand-scoped/scoped", never], ...Mcs]>;
+  initializer: StateCreator<
+    T,
+    [...Mps, ["zustand-scoped/stateReq", never]],
+    Mcs
+  >
+) => StateCreator<T, Mps, [["zustand-scoped/stateReq", never], ...Mcs]>;
 
 declare module "zustand/vanilla" {
   // eslint-disable-next-line unused-imports/no-unused-vars
   interface StoreMutators<S, A> {
-    "zustand-scoped/scoped": WithScoped<S>;
+    "zustand-scoped/stateReq": WithStateReq<S>;
   }
 }
 
@@ -34,7 +38,7 @@ type SkipTwo<T> = T extends { length: 0 }
   : never;
 
 // Makes all types Partial<T> in setState Required<T>
-type StoreScoped<S> = S extends {
+type StoreStateReq<S> = S extends {
   getState: () => infer T;
   setState: infer SetState;
 }
@@ -49,14 +53,17 @@ type StoreScoped<S> = S extends {
     : never
   : never;
 
-type WithScoped<S> = Write<S, StoreScoped<S>>;
+type WithStateReq<S> = Write<S, StoreStateReq<S>>;
 
-type ScopedImpl = <T>(
+type StateReqImpl = <T>(
   storeInitializer: StateCreator<T, [], []>
 ) => StateCreator<T, [], []>;
 
-const scopedImpl: ScopedImpl = (initializer) => (set, get, store) => {
+const stateReqImpl: StateReqImpl = (initializer) => (set, get, store) => {
   return initializer(set, get, store);
 };
 
-export const scoped = scopedImpl as unknown as Scoped;
+/**
+ * Enforce that `setState` is always called with complete state.
+ */
+export const stateReq = stateReqImpl as unknown as StateReq;

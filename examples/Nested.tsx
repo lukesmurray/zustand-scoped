@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { createScopedHook, createScopedStore, scoped } from "src";
+import { createScopedHook, createScopedStore, stateReq } from "src";
 
 interface TodoState {
   // id so we can find the todo in the parent store.
@@ -15,7 +15,7 @@ interface TodoInitialData {
 
 const createTodoStore = createScopedStore<TodoState, TodoInitialData>()(
   (initialData) =>
-    scoped((set) => ({
+    stateReq((set) => ({
       id: initialData.id,
       checked: initialData.checked ?? false,
       toggleDone: () => set((state) => ({ ...state, checked: !state.checked })),
@@ -30,7 +30,7 @@ interface AppState {
 }
 
 const createAppStore = createScopedStore<AppState>()(() =>
-  scoped((set, get) => {
+  stateReq((set, get) => {
     // define a helper function to create nested stores.
     const createNestedTodoStore = (todoInitialData: TodoInitialData) => {
       // define a selector to get the todo from the parent store.
